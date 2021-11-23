@@ -2,6 +2,7 @@ package hibernate.h2;
 
 import org.hibernate.Session;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ProductDao implements IProductDao {
@@ -30,7 +31,7 @@ public class ProductDao implements IProductDao {
             session.beginTransaction();
             List<Product> products = session.createQuery("select p from Product p").getResultList();
             session.getTransaction().commit();
-            return  products;
+            return Collections.unmodifiableList(products);
         }
     }
 
@@ -49,16 +50,34 @@ public class ProductDao implements IProductDao {
             session.beginTransaction();
             String newTitle = product.getTitle();
             int newPrice = product.getPrice();
-//            Product oldProduct = (Product) session.createQuery("select p from Product p where title = :title").setParameter("title", newTitle).getSingleResult();
-//            System.out.println(oldProduct);
- //           if (oldProduct.getTitle().equalsIgnoreCase(product.getTitle())) {
+            List<Product> products = session.createQuery("select p from Product p").getResultList();
+            if (products.stream().anyMatch((p) -> p.getTitle().equalsIgnoreCase(newTitle))) {
                 session.createQuery("update Product set price = :price where title = :title")
                         .setParameter("title", newTitle)
                         .setParameter("price", newPrice)
                         .executeUpdate();
+            } else {
+                session.save(new Product(newTitle, newPrice));
+            }
+                    //.equalsIgnoreCase(newTitle)).findFirst().orElse(session.save(new Product(newTitle)));
+
+//            String newTitle = product.getTitle();
+//            int newPrice = product.getPrice();
+//            Product oldProduct = (Product) session
+//            .createQuery("select p from Product p where title = :title")
+//            .setParameter("title", newTitle)
+//            .getSingleResult();
+//            System.out.println(oldProduct);
+//            if (oldProduct.getTitle().equalsIgnoreCase(product.getTitle())) {
+//                session.createQuery("update Product set price = :price where title = :title")
+//                        .setParameter("title", newTitle)
+//                        .setParameter("price", newPrice)
+//                        .executeUpdate();
 //            }
+//            session.save(new Product(newTitle, newPrice));
+//            session.getTransaction().commit();
 //            if (oldProduct.getPrice() == 0) {
-//                session.createQuery("insert into products (title, price) values (:title, :price)")
+//                session.createQuery("insert Product set title = :title")
 //                        .setParameter("title", newTitle)
 //                        .setParameter("price", newPrice)
 //                        .executeUpdate();
