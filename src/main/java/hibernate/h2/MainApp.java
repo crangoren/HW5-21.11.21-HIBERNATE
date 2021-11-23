@@ -15,7 +15,6 @@ public class MainApp {
             System.out.println(productDao.findAll().toString());
             productDao.deleteById(2L);
             System.out.println(productDao.findAll().toString());
-//            Product product = new Product();
             productDao.saveOrUpdate(new Product("Milk", 59));
             System.out.println(productDao.findAll().toString());
             productDao.saveOrUpdate(new Product("Soda", 44));

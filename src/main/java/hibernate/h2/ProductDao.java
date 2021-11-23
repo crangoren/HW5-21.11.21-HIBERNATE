@@ -49,21 +49,27 @@ public class ProductDao implements IProductDao {
             session.beginTransaction();
             String newTitle = product.getTitle();
             int newPrice = product.getPrice();
-            Product oldProduct = (Product) session.createQuery("select p from Product p where title = :title").setParameter("title", newTitle).getSingleResult();
-            System.out.println(oldProduct);
-            if (oldProduct.getTitle().equalsIgnoreCase(product.getTitle())) {
+//            Product oldProduct = (Product) session.createQuery("select p from Product p where title = :title").setParameter("title", newTitle).getSingleResult();
+//            System.out.println(oldProduct);
+ //           if (oldProduct.getTitle().equalsIgnoreCase(product.getTitle())) {
                 session.createQuery("update Product set price = :price where title = :title")
                         .setParameter("title", newTitle)
                         .setParameter("price", newPrice)
                         .executeUpdate();
-            } else {
-                session.createQuery("insert into products title = :title, price = :price")
-                        .setParameter("title", newTitle)
-                        .setParameter("price", newPrice)
-                        .executeUpdate();
-            }
-//            session.saveOrUpdate(product);
-            session.getTransaction().commit();
+//            }
+//            if (oldProduct.getPrice() == 0) {
+//                session.createQuery("insert into products (title, price) values (:title, :price)")
+//                        .setParameter("title", newTitle)
+//                        .setParameter("price", newPrice)
+//                        .executeUpdate();
+                //session.save(product);
+//            }
+//                Product newProduct = new Product();
+//                newProduct.setTitle(newTitle);
+//                newProduct.setPrice(newPrice);
+//                session.save(newProduct);
+//                session.getTransaction().commit();
+//                   }
             return product;
         }
     }
