@@ -1,8 +1,5 @@
 package hibernate.h2;
 
-
-import org.hibernate.Session;
-
 public class MainApp {
 
     public static void main(String[] args) {
@@ -20,7 +17,6 @@ public class MainApp {
             productDao.saveOrUpdate(new Product("Soda", 44));
             System.out.println(productDao.findAll().toString());
 
-//            System.out.println(productDao.findAll().toString());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -1,7 +1,5 @@
 package hibernate.h2;
 
-
-
 import javax.persistence.*;
 
 @Entity
